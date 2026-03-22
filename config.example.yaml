@@ -1,0 +1,35 @@
+# WhisperPen Configuration
+# Copy this file to config.yaml and customize
+
+# Global hotkey (toggle: press once to start, again to stop)
+hotkey: "alt+a"
+
+# Whisper model settings
+model_path: ""                # Leave empty to use default cache, or set a custom path
+model_size: "large-v3-turbo"  # Options: tiny, base, small, medium, large-v3-turbo, large-v3
+language: "zh"                # Primary language (e.g., "zh", "en", "ja", "ko")
+
+# Help Whisper recognize domain-specific terms
+initial_prompt: "繁體中文，technical terms 用英文。"
+
+beam_size: 5
+vad_filter: true
+
+# Paste behavior
+auto_paste: true                   # false = only copy to clipboard
+paste_keys: ["ctrl", "v"]         # Customize paste shortcut (e.g., ["shift", "insert"])
+
+# Audio capture
+audio:
+  sample_rate: 16000
+  channels: 1
+  device: null    # null = default mic. Set device index for a specific mic.
+  subtype: "PCM_16"
+
+# Optional: LLM text refinement via Ollama
+# Removes filler words, fixes misheard terms, normalizes formatting
+refine:
+  enabled: false                    # Set true if you have Ollama running
+  ollama_url: "http://localhost:11434"
+  model: "qwen2.5:7b"
+  prompt: "修正語音辨識結果。保留技術名詞英文原文，去掉口語贅詞（嗯、那個、就是、然後），輸出繁體中文。只輸出修正後的文字，不要解釋。"

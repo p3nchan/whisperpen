@@ -1,0 +1,2 @@
+"""Whisper tray app package."""
+
