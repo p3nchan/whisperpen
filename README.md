@@ -8,6 +8,8 @@
 
 WhisperPen runs [faster-whisper](https://github.com/SYSTRAN/faster-whisper) on your NVIDIA GPU for real-time speech recognition, with optional LLM-powered text cleanup via [Ollama](https://ollama.com/).
 
+> 📖 **中文介紹 →** [WhisperPen：用你的顯卡打造免費本地語音輸入](https://penchan.co/ai/20260322-whisperpen/)
+
 ## Features
 
 - **Fully local** — your audio never leaves your machine
