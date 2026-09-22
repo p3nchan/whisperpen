@@ -1,0 +1,28 @@
+name: Temporary Whisper Model Artifact
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/temp-whisper-model.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package-model:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download multilingual Whisper small q5_1 model
+        run: |
+          curl -L --fail --retry 5 --retry-delay 5 \
+            -o ggml-small-q5_1.bin \
+            'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small-q5_1.bin?download=true'
+          echo 'ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb  ggml-small-q5_1.bin' | sha256sum -c -
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ggml-small-q5_1
+          path: ggml-small-q5_1.bin
+          retention-days: 1
+          compression-level: 0
