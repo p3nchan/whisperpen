@@ -1,4 +1,4 @@
-name: Temporary Whisper Model Artifact
+name: Temporary Speaker Model Artifact
 
 on:
   push:
@@ -13,16 +13,14 @@ jobs:
   package-model:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Silero VAD model
+      - name: Download speaker embedding model
         run: |
-          curl -L --fail --retry 5 --retry-delay 5 \
-            -o ggml-silero-v6.2.0.bin \
-            'https://raw.githubusercontent.com/ggml-org/whisper.cpp/master/models/for-tests-silero-v6.2.0-ggml.bin'
-          test -s ggml-silero-v6.2.0.bin
-      - name: Upload model artifact
+          python -m pip install -q 'huggingface_hub[cli]'
+          hf download speechbrain/spkrec-ecapa-voxceleb --local-dir spkrec-ecapa-voxceleb
+      - name: Upload speaker model artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ggml-silero-v6.2.0
-          path: ggml-silero-v6.2.0.bin
+          name: spkrec-ecapa-voxceleb
+          path: spkrec-ecapa-voxceleb
           retention-days: 1
           compression-level: 0
