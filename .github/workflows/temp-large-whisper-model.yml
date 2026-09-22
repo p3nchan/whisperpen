@@ -13,16 +13,32 @@ jobs:
   package-model:
     runs-on: ubuntu-latest
     steps:
-      - name: Download large-v3-turbo q5 model
+      - name: Download and split large-v3-turbo q5 model
         run: |
           curl -L --fail --retry 5 --retry-delay 5 \
             -o ggml-large-v3-turbo-q5_0.bin \
             'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin?download=true'
           test -s ggml-large-v3-turbo-q5_0.bin
-      - name: Upload model artifact
+          split -b 190M -d -a 2 ggml-large-v3-turbo-q5_0.bin model.part.
+          ls -lh model.part.*
+      - name: Upload part 00
         uses: actions/upload-artifact@v4
         with:
-          name: ggml-large-v3-turbo-q5_0
-          path: ggml-large-v3-turbo-q5_0.bin
+          name: large-whisper-part-00
+          path: model.part.00
+          retention-days: 1
+          compression-level: 0
+      - name: Upload part 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: large-whisper-part-01
+          path: model.part.01
+          retention-days: 1
+          compression-level: 0
+      - name: Upload part 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: large-whisper-part-02
+          path: model.part.02
           retention-days: 1
           compression-level: 0
