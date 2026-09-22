@@ -1,0 +1,28 @@
+name: Temporary Large Whisper Model
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/temp-large-whisper-model.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package-model:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download large-v3-turbo q5 model
+        run: |
+          curl -L --fail --retry 5 --retry-delay 5 \
+            -o ggml-large-v3-turbo-q5_0.bin \
+            'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin?download=true'
+          test -s ggml-large-v3-turbo-q5_0.bin
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ggml-large-v3-turbo-q5_0
+          path: ggml-large-v3-turbo-q5_0.bin
+          retention-days: 1
+          compression-level: 0
